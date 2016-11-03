@@ -51,7 +51,52 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            android:weightSum="12">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:gravity="center"
+                android:text="Report"
+                android:textSize="13dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="horizontal"
+                android:weightSum="12">
+
+                <CheckBox
+                    android:id="@+id/checkboxSent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:text="Sent" />
+
+                <CheckBox
+                    android:id="@+id/checkboxDelivered"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:text="Deli" />
+
+                <CheckBox
+                    android:id="@+id/checkboxSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:text="Sum" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
             android:orientation="horizontal">
             android:weightSum="12">
 
@@ -269,17 +314,40 @@
                             android:layout_height="match_parent"
                             android:layout_weight="8"
                             android:gravity="center"
-                            android:text="Path"
+                            android:text="File"
                             android:textSize="13dp"
 
                             />
 
-                        <EditText
-                            android:id="@+id/editTextPath"
+                        <Spinner
+                            android:id="@+id/spinnerFile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
                             android:gravity="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:gravity="center"
+                            android:text="Check"
+                            android:textSize="13dp" />
+
+                        <Button
+                            android:id="@+id/buttonTryParse"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:text="Try Parse" />
                     </LinearLayout>
                 </LinearLayout>
 

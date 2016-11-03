@@ -33,8 +33,9 @@ public class FragmentSchedule extends Fragment implements View.OnClickListener {
     Schedule schedule;
     View view;
 
-    CheckBox checkBoxIsRepeated,
-            checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday, checkBoxThursday, checkBoxFriday, checkBoxSaturday;
+    CheckBox
+            checkBoxSunday, checkBoxMonday, checkBoxTuesday, checkBoxWednesday,
+            checkBoxThursday, checkBoxFriday, checkBoxSaturday;
     EditText editTextTimeStarted, editTextTimeFinished, editTextTimeInterval;
 
 
@@ -52,7 +53,6 @@ public class FragmentSchedule extends Fragment implements View.OnClickListener {
         editTextTimeStarted = (EditText) this.getView().findViewById(R.id.editTextTimeStarted);
         editTextTimeFinished = (EditText) this.getView().findViewById(R.id.editTextTimeFinished);
         editTextTimeInterval = (EditText) this.getView().findViewById(R.id.editTextInterval);
-        checkBoxIsRepeated = (CheckBox) this.getActivity().findViewById(R.id.checkboxIsRepeated);
 
         checkBoxSunday = (CheckBox) this.getActivity().findViewById(R.id.checkboxSunday);
         checkBoxMonday = (CheckBox) this.getActivity().findViewById(R.id.checkboxMonday);
@@ -72,7 +72,6 @@ public class FragmentSchedule extends Fragment implements View.OnClickListener {
 
         editTextTimeStarted.setText(Converter.toString(schedule.timeStarted, Converter.TIME));
         editTextTimeFinished.setText(Converter.toString(schedule.timeFinished, Converter.TIME));
-        checkBoxIsRepeated.setChecked(schedule.isRepeated);
 
         checkBoxSunday.setChecked(schedule.days[0]);
         checkBoxMonday.setChecked(schedule.days[1]);
@@ -133,7 +132,6 @@ public class FragmentSchedule extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         try {
-            schedule.isRepeated = checkBoxIsRepeated.isChecked();
 
             schedule.days[0] = checkBoxSunday.isChecked();
             schedule.days[1] = checkBoxMonday.isChecked();

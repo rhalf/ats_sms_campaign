@@ -15,9 +15,9 @@
             android:icon="@mipmap/ic_schedule_black_48dp"
             android:title="Schedule" />
         <item
-            android:id="@+id/nav_report"
+            android:id="@+id/nav_about"
             android:icon="@mipmap/ic_description_black_48dp"
-            android:title="Report" />
+            android:title="About" />
 
 
         <!--<item-->

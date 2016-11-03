@@ -1,6 +1,7 @@
 package com.ats_qatar.smscampaign.models;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.Serializable;
@@ -17,17 +18,20 @@ public class Schedule implements Serializable {
     public boolean[] days = new boolean[7];
     public Calendar timeStarted;
     public Calendar timeFinished;
-    public boolean isRepeated;
     public int interval;
 
-    public static void set(Activity activity, Schedule schedule)  {
+
+    public static void set(Activity activity, Schedule schedule) {
+        set(activity.getApplicationContext(), schedule);
+    }
+
+    public static void set(Context context, Schedule schedule) {
         SharedPreferences sp;
         SharedPreferences.Editor spEditor;
         String preferenceName = "schedule";
-        sp = activity.getSharedPreferences(preferenceName, 0);
+        sp = context.getSharedPreferences(preferenceName, 0);
         spEditor = sp.edit();
 
-        spEditor.putBoolean("isRepeated", schedule.isRepeated);
         spEditor.putBoolean("day0", schedule.days[0]);
         spEditor.putBoolean("day1", schedule.days[1]);
         spEditor.putBoolean("day2", schedule.days[2]);
@@ -42,12 +46,16 @@ public class Schedule implements Serializable {
     }
 
     public static Schedule get(Activity activity) {
+        return get(activity.getApplicationContext());
+    }
+
+
+    public static Schedule get(Context context) {
         SharedPreferences sp;
         String preferenceName = "schedule";
-        sp = activity.getSharedPreferences(preferenceName, 0);
+        sp = context.getSharedPreferences(preferenceName, 0);
 
         Schedule schedule = new Schedule();
-        schedule.isRepeated = sp.getBoolean("isRepeated", false);
         schedule.days[0] = sp.getBoolean("day0", false);
         schedule.days[1] = sp.getBoolean("day1", false);
         schedule.days[2] = sp.getBoolean("day2", false);

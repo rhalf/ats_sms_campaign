@@ -9,16 +9,16 @@ import java.util.ArrayList;
 
 public class Sms implements Serializable {
     public long id;
-    public String dateTimeCreated = "";
+    public String timeProcessed = "";
     public String number = "";
     public String message = "";
     public String center = "";
 
     public String sent = "";
-    public String dateTimeSent = "";
+    public String timeSent = "";
 
     public String delivered = "";
-    public String dateTimeDelivered = "";
+    public String timeDelivered = "";
 
     public String error = "";
 

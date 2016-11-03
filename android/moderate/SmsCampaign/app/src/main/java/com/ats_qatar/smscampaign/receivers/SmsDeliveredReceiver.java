@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.ats_qatar.smscampaign.models.Converter;
 import com.ats_qatar.smscampaign.models.Scope;
+import com.ats_qatar.smscampaign.models.Setting;
 import com.ats_qatar.smscampaign.models.Sms;
 
 import java.util.Date;
@@ -18,8 +19,19 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Sms sms = (Sms) intent.getExtras().getSerializable("SMS");
-        sms.delivered = "OK";
-        sms.dateTimeDelivered = Converter.toString(new Date(), Converter.DATE_TIME);
+
+        Setting setting = Setting.get(context.getApplicationContext());
+
+        if (setting.report[1]) {
+            Sms sms = (Sms) intent.getExtras().getSerializable("SMS");
+            sms.delivered = "OK";
+            sms.timeDelivered = Converter.toString(new Date(), Converter.TIME);
+            Scope.writeDelivered(sms);
+        }
+
+
+        if (Scope.smsDetail != null) {
+            Scope.smsDetail.totalDelivered++;
+        }
     }
 }

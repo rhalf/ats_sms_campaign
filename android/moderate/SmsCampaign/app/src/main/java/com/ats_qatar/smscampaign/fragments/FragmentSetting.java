@@ -1,31 +1,31 @@
 package com.ats_qatar.smscampaign.fragments;
 
-import android.app.DatePickerDialog;
+import android.Manifest;
 import android.app.Fragment;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.ats_qatar.smscampaign.R;
 import com.ats_qatar.smscampaign.models.Nation;
+import com.ats_qatar.smscampaign.models.Scope;
 import com.ats_qatar.smscampaign.models.Setting;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Rhalf on 9/28/2016.
@@ -38,23 +38,14 @@ public class FragmentSetting extends Fragment {
 
     LinearLayout linearLayoutSingle, linearLayoutLoop, linearLayoutFile, linearLayoutApi;
 
-    Spinner spinnerAreaCode;
+    Spinner spinnerAreaCode, spinnerFile;
     EditText editTextMessage;
 
     RadioGroup radioGroupProfile;
+    CheckBox checkBoxSent, checkBoxDelivered, checkBoxSummary;
     RadioButton radioButtonSingle, radioButtonLoop, radioButtonFile, radioButtonApi;
-
-    EditText editTextNumber;
-
-    EditText editTextPrefix;
-    EditText editTextPadding;
-    EditText editTextMin;
-    EditText editTextMax;
-
-    EditText editTextPath;
-
-    EditText editTextUrl;
-
+    EditText editTextNumber, editTextPrefix, editTextPadding, editTextMin, editTextMax, editTextUrl;
+    Button buttonTryParse;
 
     @Nullable
     @Override
@@ -75,6 +66,10 @@ public class FragmentSetting extends Fragment {
         linearLayoutFile = (LinearLayout) this.getView().findViewById(R.id.linearLayoutFile);
         linearLayoutApi = (LinearLayout) this.getView().findViewById(R.id.linearLayoutApi);
 
+        checkBoxSent = (CheckBox) this.getView().findViewById(R.id.checkboxSent);
+        checkBoxDelivered = (CheckBox) this.getView().findViewById(R.id.checkboxDelivered);
+        checkBoxSummary = (CheckBox) this.getView().findViewById(R.id.checkboxSummary);
+
 
         spinnerAreaCode = (Spinner) this.getView().findViewById(R.id.spinnerAreaCode);
         editTextMessage = (EditText) this.getView().findViewById(R.id.editTextMessage);
@@ -92,10 +87,25 @@ public class FragmentSetting extends Fragment {
         editTextMin = (EditText) this.getView().findViewById(R.id.editTextMin);
         editTextMax = (EditText) this.getView().findViewById(R.id.editTextMax);
 
-        editTextPath = (EditText) this.getView().findViewById(R.id.editTextPath);
+        spinnerFile = (Spinner) this.getView().findViewById(R.id.spinnerFile);
         editTextUrl = (EditText) this.getView().findViewById(R.id.editTextUrl);
 
+        buttonTryParse = (Button) this.getView().findViewById(R.id.buttonTryParse);
+
         //Initialize
+
+        buttonTryParse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ArrayList<String> numbers = Scope.parseNumberFrom(spinnerFile.getSelectedItem().toString());
+                    Toast.makeText(getActivity(), "Parsing : OK\nNumbers : " + numbers.size(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         ArrayList<Nation> nations = Nation.getNations();
         ArrayAdapter<Nation> adapter = new ArrayAdapter<Nation>(
                 getActivity(),
@@ -109,19 +119,23 @@ public class FragmentSetting extends Fragment {
             }
         }
 
+        checkBoxSent.setChecked(setting.report[0]);
+        checkBoxDelivered.setChecked(setting.report[1]);
+        checkBoxSummary.setChecked(setting.report[2]);
+
         editTextMessage.setText(setting.message);
 
         switch (setting.mode) {
             case Setting.SINGLE:
                 radioButtonSingle.setChecked(true);
                 break;
-            case Setting.LOOPING:
+            case Setting.LOOP:
                 radioButtonLoop.setChecked(true);
                 break;
-            case Setting.IMPORT_FILE:
+            case Setting.FILE:
                 radioButtonFile.setChecked(true);
                 break;
-            case Setting.WEB_SERVICE:
+            case Setting.API:
                 radioButtonApi.setChecked(true);
                 break;
         }
@@ -134,13 +148,13 @@ public class FragmentSetting extends Fragment {
                         update(Setting.SINGLE);
                         break;
                     case R.id.radioButtonLoop:
-                        update(Setting.LOOPING);
+                        update(Setting.LOOP);
                         break;
                     case R.id.radioButtonFile:
-                        update(Setting.IMPORT_FILE);
+                        update(Setting.FILE);
                         break;
                     case R.id.radioButtonApi:
-                        update(Setting.WEB_SERVICE);
+                        update(Setting.API);
                         break;
                 }
             }
@@ -153,15 +167,15 @@ public class FragmentSetting extends Fragment {
         editTextMin.setText(String.valueOf(setting.min));
         editTextMax.setText(String.valueOf(setting.max));
 
-        editTextPath.setText(setting.path);
-        editTextPath.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-
-                }
-            }
-        });
+        //Initialize
+        if (Scope.getImportFiles() != null) {
+            ArrayAdapter<String> files = new ArrayAdapter<String>(
+                    getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    Scope.getImportFiles());
+            spinnerFile.setAdapter(files);
+            spinnerFile.setSelection(files.getPosition(setting.path));
+        }
 
         editTextUrl.setText(setting.url);
 
@@ -177,36 +191,41 @@ public class FragmentSetting extends Fragment {
                 linearLayoutApi.setVisibility(View.GONE);
                 setting.mode = Setting.SINGLE;
                 break;
-            case Setting.LOOPING:
+            case Setting.LOOP:
                 linearLayoutSingle.setVisibility(View.GONE);
                 linearLayoutLoop.setVisibility(View.VISIBLE);
                 linearLayoutFile.setVisibility(View.GONE);
                 linearLayoutApi.setVisibility(View.GONE);
-                setting.mode = Setting.LOOPING;
+                setting.mode = Setting.LOOP;
                 break;
-            case Setting.IMPORT_FILE:
+            case Setting.FILE:
                 linearLayoutSingle.setVisibility(View.GONE);
                 linearLayoutLoop.setVisibility(View.GONE);
                 linearLayoutFile.setVisibility(View.VISIBLE);
                 linearLayoutApi.setVisibility(View.GONE);
-                setting.mode = Setting.IMPORT_FILE;
+                setting.mode = Setting.FILE;
                 break;
-            case Setting.WEB_SERVICE:
+            case Setting.API:
                 linearLayoutSingle.setVisibility(View.GONE);
                 linearLayoutLoop.setVisibility(View.GONE);
                 linearLayoutFile.setVisibility(View.GONE);
                 linearLayoutApi.setVisibility(View.VISIBLE);
-                setting.mode = Setting.WEB_SERVICE;
+                setting.mode = Setting.API;
                 break;
         }
     }
 
+
     @Override
-    public void onDestroyView() {
+    public void onDestroy() {
         try {
             Nation nation = (Nation) spinnerAreaCode.getSelectedItem();
             setting.areaCode = (nation.areaCode);
             setting.message = (editTextMessage.getText().toString());
+            setting.report[0] = checkBoxSent.isChecked();
+            setting.report[1] = checkBoxDelivered.isChecked();
+            setting.report[2] = checkBoxSummary.isChecked();
+
             //SINGLE
             setting.number = editTextNumber.getText().toString();
             //LOOP
@@ -215,17 +234,21 @@ public class FragmentSetting extends Fragment {
             setting.min = (Integer.valueOf(editTextMin.getText().toString()));
             setting.max = (Integer.valueOf(editTextMax.getText().toString()));
             //FILE
-            setting.path = editTextPath.getText().toString();
+            if (spinnerFile.getSelectedItem() != null) {
+                setting.path = spinnerFile.getSelectedItem().toString();
+            } else {
+                setting.path = "/";
+            }
+
             //API
             setting.url = editTextUrl.getText().toString();
 
             Setting.set(this.getActivity(), setting);
+
             Toast.makeText(this.getActivity(), "Setting is saved...", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        super.onDestroyView();
+        super.onDestroy();
     }
-
-
 }

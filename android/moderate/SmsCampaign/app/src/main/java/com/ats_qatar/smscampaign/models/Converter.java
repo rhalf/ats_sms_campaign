@@ -1,24 +1,6 @@
 package com.ats_qatar.smscampaign.models;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.Application;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.text.format.Time;
-import android.widget.Toast;
-
-import com.ats_qatar.smscampaign.services.SmsCampaignService;
-import com.ats_qatar.smscampaign.services.SmsContainer;
-import com.ats_qatar.smscampaign.services.SmsDispatcher;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

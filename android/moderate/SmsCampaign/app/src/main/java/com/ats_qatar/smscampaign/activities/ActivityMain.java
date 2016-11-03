@@ -7,8 +7,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,16 +16,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.ats_qatar.smscampaign.R;
 import com.ats_qatar.smscampaign.fragments.FragmentDashboard;
-import com.ats_qatar.smscampaign.fragments.FragmentReport;
+import com.ats_qatar.smscampaign.fragments.FragmentAbout;
 import com.ats_qatar.smscampaign.fragments.FragmentSchedule;
 import com.ats_qatar.smscampaign.fragments.FragmentSetting;
-import com.ats_qatar.smscampaign.R;
+import com.ats_qatar.smscampaign.models.Resource;
 import com.ats_qatar.smscampaign.models.Scope;
 import com.ats_qatar.smscampaign.receivers.SmsDeliveredReceiver;
 import com.ats_qatar.smscampaign.receivers.SmsSentReceiver;
-import com.ats_qatar.smscampaign.services.SmsContainer;
+import com.ats_qatar.smscampaign.services.SmsDetail;
 import com.ats_qatar.smscampaign.services.SmsDispatcher;
 
 
@@ -68,23 +70,36 @@ public class ActivityMain extends AppCompatActivity
                 .replace(R.id.content_frame, new FragmentDashboard())
                 .commit();
 
-
-        //Set
         int requestCode = PackageManager.PERMISSION_GRANTED;
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, requestCode);
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WAKE_LOCK,
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE
 
+        }, requestCode);
 
         registerReceiver(smsSentReceiver, new IntentFilter("SENT"));
         registerReceiver(smsDeliveredReceiver, new IntentFilter("DELIVERED"));
 
 
-        Scope.smsContainer = new SmsContainer();
+        Scope.smsDetail = new SmsDetail();
         Scope.smsDispatcher = new SmsDispatcher();
 
-
         final PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        this.wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK,"Tag");
+        this.wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Tag");
         this.wakeLock.acquire();
+
+
+        Resource resource = Resource.get(this);
+
+        if (Scope.isExpired(resource.dtExpire)) {
+            Toast.makeText(this,"App is Expired...", Toast.LENGTH_LONG).show();
+            this.finish();
+        }
     }
 
     @Override
@@ -116,9 +131,9 @@ public class ActivityMain extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, new FragmentSchedule())
                     .commit();
-        }else if (id == R.id.nav_report) {
+        } else if (id == R.id.nav_about) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, new FragmentReport())
+                    .replace(R.id.content_frame, new FragmentAbout())
                     .commit();
         }
 

@@ -14,7 +14,11 @@ import java.util.Date;
  */
 
 
-public class SmsCampaignService {
+public class
+
+
+
+SmsCampaignService {
 
     SmsManager smsManager = SmsManager.getDefault();
 
@@ -113,25 +117,26 @@ public class SmsCampaignService {
                         deliveryIntent.putExtra("ID", sms.id);
 
 
-//                        if (sms.message.length() >= 70) {
-//
-//                            ArrayList<String> messages = smsManager.divideMessage(sms.message);
-//
-//                            ArrayList<PendingIntent> sentPIs = new ArrayList<>();
-//                            ArrayList<PendingIntent> deliverPIs = new ArrayList<>();
-//
-//                            for (int index1 = 0; index1 < messages.size(); index1++) {
-//                                sentPIs.add(PendingIntent.getBroadcast(
-//                                        activity.getApplicationContext(), 0, sentIntent,
-//                                        PendingIntent.FLAG_UPDATE_CURRENT));
-//                                deliverPIs.add(PendingIntent.getBroadcast(
-//                                        activity.getApplicationContext(), 0, deliveryIntent,
-//                                        PendingIntent.FLAG_UPDATE_CURRENT));
-//                            }
-//
+                        if (sms.message.length() >= 70) {
+
+                            ArrayList<String> messages = smsManager.divideMessage(sms.message);
+
+                            ArrayList<PendingIntent> sentPIs = new ArrayList<>();
+                            ArrayList<PendingIntent> deliverPIs = new ArrayList<>();
+
+                            for (int index1 = 0; index1 < messages.size(); index1++) {
+                                sentPIs.add(PendingIntent.getBroadcast(
+                                        activity.getApplicationContext(), 0, sentIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT));
+                                deliverPIs.add(PendingIntent.getBroadcast(
+                                        activity.getApplicationContext(), 0, deliveryIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT));
+                            }
+
 //                            smsManager.sendMultipartTextMessage(sms.number, sms.center, messages, sentPIs,  deliverPIs);
-//
-//                        } else {
+                            smsManager.sendMultipartTextMessage(sms.number, sms.center, messages, null,  null );
+
+                        } else {
                             PendingIntent sentPI;
                             PendingIntent deliverPI;
 
@@ -146,7 +151,7 @@ public class SmsCampaignService {
 //                        smsManager.sendTextMessage(sms.number, sms.center, sms.message, sentPI, deliverPI);
                             smsManager.sendTextMessage(sms.number, null, sms.message, null, null);
 
-//                        }
+                       }
 
                     } catch (Exception exception) {
                         sms.error = exception.getMessage();

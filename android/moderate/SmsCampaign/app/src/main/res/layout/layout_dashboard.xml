@@ -34,7 +34,8 @@
                 android:id="@+id/scrollViewDebug"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:scrollbars="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -52,68 +53,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="8"
-                            android:text="Time Started" />
+                            android:text="Mode" />
 
                         <TextView
-                            android:id="@+id/textViewTimeStarted"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:orientation="horizontal"
-                        android:weightSum="12">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="8"
-                            android:text="Time Finish" />
-
-                        <TextView
-                            android:id="@+id/textViewTimeFinished"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:orientation="horizontal"
-                        android:weightSum="12">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="8"
-                            android:text="Interval" />
-
-                        <TextView
-                            android:id="@+id/textViewInterval"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:orientation="horizontal"
-                        android:weightSum="12">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="8"
-                            android:text="Count" />
-
-                        <TextView
-                            android:id="@+id/textViewCount"
+                            android:id="@+id/textViewMode"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="4" />
@@ -148,15 +91,116 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="8"
+                            android:text="Time Started" />
+
+                        <TextView
+                            android:id="@+id/textViewTimeStarted"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="00:00:00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:text="Time Finish" />
+
+                        <TextView
+                            android:id="@+id/textViewTimeFinished"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="00:00:00" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:text="Interval" />
+
+                        <TextView
+                            android:id="@+id/textViewInterval"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="3" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:text="Count" />
+
+                        <TextView
+                            android:id="@+id/textViewCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="0" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
                             android:text="Status" />
 
                         <TextView
                             android:id="@+id/textViewStatus"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="4" />
+                            android:layout_weight="4"
+                            android:text="STOPPED" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:text="Processed" />
+
+                        <TextView
+                            android:id="@+id/textViewProcessed"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="0" />
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -173,9 +217,46 @@
                             android:id="@+id/textViewSent"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="4" />
+                            android:layout_weight="4"
+                            android:text="0" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:text="Failed" />
+
+                        <TextView
+                            android:id="@+id/textViewFailed"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="0" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="12">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8"
+                            android:text="Delivered" />
+
+                        <TextView
+                            android:id="@+id/textViewDelivered"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:text="0" />
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -197,7 +278,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="80dp"
                         android:orientation="horizontal"
                         android:weightSum="12">
 
@@ -205,13 +286,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="8"
-                            android:text="Message" />
+                            android:lines="4"
+                            android:text="Error" />
 
                         <TextView
-                            android:id="@+id/textViewMessage"
+                            android:id="@+id/textViewError"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="4" />
+                            android:layout_weight="4"
+                            android:lines="4" />
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
