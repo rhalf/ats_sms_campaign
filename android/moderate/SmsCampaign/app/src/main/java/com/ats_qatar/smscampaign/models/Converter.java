@@ -74,4 +74,14 @@ public class Converter implements Serializable {
     }
 
 
+    public static String  concat(String delimiter, String[] strings) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for(int index = 0; index < strings.length; index++){
+            stringBuilder.append(strings[index]);
+            stringBuilder.append(delimiter);
+        }
+
+        return stringBuilder.substring(0,stringBuilder.length() - 2);
+    }
 }

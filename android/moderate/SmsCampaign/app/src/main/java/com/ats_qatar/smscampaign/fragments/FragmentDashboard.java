@@ -23,6 +23,7 @@ import android.widget.ToggleButton;
 
 import com.ats_qatar.smscampaign.R;
 import com.ats_qatar.smscampaign.models.Converter;
+import com.ats_qatar.smscampaign.models.Resource;
 import com.ats_qatar.smscampaign.models.Schedule;
 import com.ats_qatar.smscampaign.models.Scope;
 import com.ats_qatar.smscampaign.models.Setting;
@@ -163,6 +164,13 @@ public class FragmentDashboard extends Fragment {
         toggleButtonStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                Resource resource = Resource.get(getActivity());
+                if (resource.isNotExpired()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "ActivationKey is Expired", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (isChecked) {
                     sendRequest("START");
                 } else {

@@ -16,14 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.ats_qatar.smscampaign.R;
-import com.ats_qatar.smscampaign.fragments.FragmentDashboard;
 import com.ats_qatar.smscampaign.fragments.FragmentAbout;
+import com.ats_qatar.smscampaign.fragments.FragmentDashboard;
 import com.ats_qatar.smscampaign.fragments.FragmentSchedule;
 import com.ats_qatar.smscampaign.fragments.FragmentSetting;
-import com.ats_qatar.smscampaign.models.Resource;
 import com.ats_qatar.smscampaign.models.Scope;
 import com.ats_qatar.smscampaign.receivers.SmsDeliveredReceiver;
 import com.ats_qatar.smscampaign.receivers.SmsSentReceiver;
@@ -94,12 +92,12 @@ public class ActivityMain extends AppCompatActivity
         this.wakeLock.acquire();
 
 
-        Resource resource = Resource.get(this);
+//        Resource resource = Resource.get(this);
 
-        if (Scope.isExpired(resource.dtExpire)) {
-            Toast.makeText(this,"App is Expired...", Toast.LENGTH_LONG).show();
-            this.finish();
-        }
+//        if (Scope.isExpired(resource.dtExpire)) {
+//            Toast.makeText(this,"App is Expired...", Toast.LENGTH_LONG).show();
+//            this.finish();
+//        }
     }
 
     @Override

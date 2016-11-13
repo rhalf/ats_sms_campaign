@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +24,13 @@ public class FragmentAbout extends Fragment implements View.OnClickListener {
 
     View view;
 
-    TextView textViewUser, textViewDtExpire, editTextKey;
+    TextView textViewImei, textViewDtExpire, textViewSmsCreditConsumed, textViewSmsCreditLimit;
+
+    EditText editTextKey;
 
     Button buttonActivate;
+
+    int trials = 0;
 
     @Nullable
     @Override
@@ -38,18 +43,33 @@ public class FragmentAbout extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        textViewUser = (TextView) getActivity().findViewById(R.id.textViewUser);
+        textViewImei = (TextView) getActivity().findViewById(R.id.textViewImei);
+
         textViewDtExpire = (TextView) getActivity().findViewById(R.id.textViewDtExpire);
-        editTextKey = (TextView) getActivity().findViewById(R.id.editTextKey);
+
+        textViewSmsCreditConsumed = (TextView) getActivity().findViewById(R.id.textViewSmsCreditConsumed);
+
+        textViewSmsCreditLimit = (TextView) getActivity().findViewById(R.id.textViewSmsCreditLimit);
+
+        editTextKey = (EditText) getActivity().findViewById(R.id.editTextKey);
 
         buttonActivate = (Button) getActivity().findViewById(R.id.buttonActivate);
 
-        Resource resource = Resource.get(this.getActivity().getApplicationContext());
-
-        textViewUser.setText(resource.userId);
-        textViewDtExpire.setText(Converter.toString(resource.dtExpire, Converter.DATE));
         buttonActivate.setOnClickListener(this);
 
+        load();
+    }
+
+    private void load() {
+        Resource resource = Resource.get(this.getActivity().getApplicationContext());
+
+        textViewImei.setText(resource.imei);
+
+        textViewDtExpire.setText(Converter.toString(resource.dtExpire, Converter.DATE));
+
+        textViewSmsCreditConsumed.setText(String.valueOf(resource.smsCreditConsumed));
+
+        textViewSmsCreditLimit.setText(String.valueOf(resource.smsCreditLimit));
     }
 
     @Override
@@ -57,17 +77,42 @@ public class FragmentAbout extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.buttonActivate: {
 
+                if (trials == 3) {
+                    getActivity().finish();
+                } else {
+                    trials++;
+                }
+
+                Crypt crypt = Crypt.getInstance();
+                Resource resource = Resource.get(this.getActivity());
+
+                if (resource.activationKey != null) {
+                    if (editTextKey.getText().toString().compareTo(resource.activationKey) == 0) {
+                        Toast.makeText(getActivity(), "Key is already in used...", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
+
                 try {
-                    Crypt crypt = Crypt.getInstance();
-                    Resource resource = Resource.get(this.getActivity());
-                    byte[] result = crypt.encrypt(resource.userId, "20-12-06".getBytes());
-                    editTextKey.setText(Crypt.toHex(result));
 
-                    byte[] raw = crypt.decrypt("5hCQazvy",result);
-                    Toast.makeText(getActivity(),new String(raw,"UTF-8"),Toast.LENGTH_LONG).show();
+                    byte[] raw = crypt.decrypt(resource.imei + "0", Crypt.toByte(editTextKey.getText().toString()));
+                    String data = new String(raw, "UTF-8");
 
-                }catch (Exception exception) {
-                    Toast.makeText(getActivity(),exception.getMessage(),Toast.LENGTH_LONG).show();
+                    String[] datas = data.split(",");
+
+                    resource.dtExpire = Converter.toCalendar(datas[0], Converter.DATE);
+                    resource.smsCreditLimit = Integer.valueOf(datas[1]);
+                    resource.smsCreditConsumed = 0;
+                    resource.activationKey = editTextKey.getText().toString();
+                    Resource.set(getActivity(), resource);
+
+                    load();
+
+                    Toast.makeText(getActivity(), "New ActivationKey has been loaded...", Toast.LENGTH_LONG).show();
+                } catch (Exception exception) {
+                    //Toast.makeText(getActivity(),exception.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Wrong ActivationKey! " + String.valueOf(3 - trials) + " trials remaining.", Toast.LENGTH_LONG).show();
                 }
                 break;
             }

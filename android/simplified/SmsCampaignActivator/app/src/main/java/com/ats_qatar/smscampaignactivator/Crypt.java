@@ -1,4 +1,4 @@
-package com.ats_qatar.smscampaign.models;
+package com.ats_qatar.smscampaignactivator;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,7 +21,7 @@ public class Crypt {
     }
 
     public byte[] encrypt(String key, byte[] raw) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
+        Cipher cipher =  Cipher.getInstance("AES");
         SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), "AES");
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
         byte[] encrypted = cipher.doFinal(raw);
@@ -30,7 +30,7 @@ public class Crypt {
 
     public byte[] decrypt(String key, byte[] encrypted) throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
+        Cipher cipher =  Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec);
         byte[] decrypted = cipher.doFinal(encrypted);
         return decrypted;

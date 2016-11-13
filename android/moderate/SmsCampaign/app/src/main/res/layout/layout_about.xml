@@ -32,21 +32,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:padding="20dp"
-                android:scrollbars="vertical">
+                android:layout_weight="6"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/textViewDebug"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="80dp"
                     android:src="@mipmap/ats_logo" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="Advanced Technologies and Solutions \n ats-qatar.com" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="6"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -58,14 +65,15 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="8"
-                        android:text="User" />
+                        android:layout_weight="6"
+                        android:text="Imei" />
 
                     <TextView
-                        android:id="@+id/textViewUser"
+                        android:id="@+id/textViewImei"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
+                        android:layout_weight="6"
+                        android:textIsSelectable="true"
                         android:text="0" />
                 </LinearLayout>
 
@@ -78,17 +86,56 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="8"
+                        android:layout_weight="6"
                         android:text="Expiration" />
 
                     <TextView
                         android:id="@+id/textViewDtExpire"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
+                        android:layout_weight="6"
                         android:text="0" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:weightSum="12">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:text="Credit Limit" />
+
+                    <TextView
+                        android:id="@+id/textViewSmsCreditLimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:text="0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:weightSum="12">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:text="Credit Consumed" />
+
+                    <TextView
+                        android:id="@+id/textViewSmsCreditConsumed"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:text="0" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -102,15 +149,13 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:text="Activate"
-                    />
+                    android:hint="Activation Key" />
 
                 <Button
                     android:id="@+id/buttonActivate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:text="Activate"
-                    />
+                    android:text="Activate" />
 
 
             </LinearLayout>

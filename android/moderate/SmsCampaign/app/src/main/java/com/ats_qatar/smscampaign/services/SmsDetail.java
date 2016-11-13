@@ -10,5 +10,7 @@ public class SmsDetail implements Serializable{
     public int totalSent;
     public int totalFailed;
     public int totalDelivered;
+    public int smsMaximumLimit;
+
 
 }

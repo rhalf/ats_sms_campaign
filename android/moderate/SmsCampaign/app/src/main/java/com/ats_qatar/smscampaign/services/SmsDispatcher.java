@@ -13,6 +13,7 @@ import android.telephony.SmsManager;
 import android.widget.Toast;
 
 import com.ats_qatar.smscampaign.models.Converter;
+import com.ats_qatar.smscampaign.models.Resource;
 import com.ats_qatar.smscampaign.models.Schedule;
 import com.ats_qatar.smscampaign.models.Scope;
 import com.ats_qatar.smscampaign.models.Setting;
@@ -50,6 +51,8 @@ public class SmsDispatcher extends Service {
 
     public Setting setting = null;
     public Schedule schedule = null;
+    public Resource resource = null;
+
     public Sms sms = null;
 
 
@@ -226,6 +229,8 @@ public class SmsDispatcher extends Service {
         instance.smsManager = SmsManager.getDefault();
         instance.setting = Setting.get(getApplicationContext());
         instance.schedule = Schedule.get(getApplicationContext());
+        instance.resource = Resource.get(getApplicationContext());
+
 
         instance.dtNow = Scope.getMinutes(Calendar.getInstance());
         instance.dtStart = Scope.getMinutes(instance.schedule.timeStarted);
@@ -282,6 +287,14 @@ public class SmsDispatcher extends Service {
                 instance.command = SmsDispatcher.RUNNING;
                 updateGlobalVariable();
 
+                if (instance.resource.isNotExpired()) {
+                    throw new Exception("ActivationKey is Expired");
+                }
+
+                if (instance.resource.isCreditLimitReached()) {
+                    throw new Exception("Credit Limit is reached");
+                }
+
                 for (int interval = 0; interval < instance.schedule.interval; interval++) {
                     instance.count = (instance.schedule.interval) - interval;
                     Thread.sleep(1000);
@@ -335,6 +348,14 @@ public class SmsDispatcher extends Service {
                 instance.command = SmsDispatcher.RUNNING;
                 updateGlobalVariable();
 
+                if (instance.resource.isNotExpired()) {
+                    throw new Exception("ActivationKey is Expired");
+                }
+
+                if (instance.resource.isCreditLimitReached()) {
+                    throw new Exception("Credit Limit is reached");
+                }
+
                 for (int interval = 0; interval < instance.schedule.interval; interval++) {
                     instance.count = (instance.schedule.interval) - interval;
                     Thread.sleep(1000);
@@ -382,6 +403,7 @@ public class SmsDispatcher extends Service {
         if (sms.message.length() >= 70) {
             ArrayList<String> messages = instance.smsManager.divideMessage(sms.message);
             instance.processed += messages.size();
+            instance.resource.smsCreditConsumed += messages.size();
 
             if (instance.setting.report[0] && instance.setting.report[1]) {
                 Intent sentIntent = new Intent("SENT");
@@ -472,8 +494,10 @@ public class SmsDispatcher extends Service {
 
             instance.command = SmsDispatcher.SENDING;
             instance.processed += 1;
+            instance.resource.smsCreditConsumed += 1;
         }
 
+        Resource.set(getApplicationContext(), instance.resource);
     }
 }
 
